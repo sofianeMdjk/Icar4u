@@ -31,6 +31,7 @@ def load_set(videofile,i):
         count += 1  ### increase count
         frames = []  ### frames will be the individual images and frames_resh will be the "processed" ones
 
+
         for k in range(i):
             vidcap.read()
 
