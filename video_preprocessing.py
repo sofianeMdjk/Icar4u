@@ -25,7 +25,7 @@ def load_set(videofile,i):
     all_frames = []
     img = []        ### create an array to save each image as an array as its loaded
     while success: ### while success == True
-        success, img = vidcap.read()  ### if success is still true, attempt to read in next frame from vidcap video import
+        #success, img = vidcap.read()  ### if success is still true, attempt to read in next frame from vidcap video import
         count += 1  ### increase count
         frames = []  ### frames will be the individual images and frames_resh will be the "processed" ones
         print(str(img))
@@ -33,49 +33,7 @@ def load_set(videofile,i):
         for k in range(i):
             vidcap.read()
 
-        # [[56  40  32]
-        #  [70  54  46]
-        # [75
-        # 59
-        # 51]
-        # ...
-        # [92
-        # 75
-        # 62]
-        # [84  67  54]
-        # [66
-        # 49
-        # 36]]
-        #
-        # [[57  41  33]
-        #  [71  55  47]
-        # [76
-        # 60
-        # 52]
-        # ...
-        # [86
-        # 69
-        # 56]
-        # [78  61  48]
-        # [61
-        # 44
-        # 31]]
-        #
-        # [[47  31  23]
-        #  [61  45  37]
-        # [66
-        # 50
-        # 42]
-        # ...
-        # [80
-        # 63
-        # 50]
-        # [72  55  42]
-        # [55
-        # 38
-        # 25]]]
-
-        for j in range(i ,99+i):
+        for j in range(0,99):
             try:
                 success, img = vidcap.read()
 
@@ -89,12 +47,8 @@ def load_set(videofile,i):
                 count+=num_frames
             except:
                 count+=1
-                pass  # print 'There are ', count, ' frame; delete last'        read_frames(videofile, name)
+                pass
 
-        ### if the frames are the right shape , then save
-        # print numpy.shape(frames), numpy.shape(all_frames)
-
-        #if numpy.shape(frames )==(num_frames, 160, 120):
         all_frames.append(frames)
 
     vidcap.release()
