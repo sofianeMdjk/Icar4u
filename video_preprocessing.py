@@ -36,6 +36,7 @@ def load_set(videofile):
                 tmp = skimage.color.rgb2gray(numpy.array(img))
                 ### ref for above: https://www.safaribooksonline.com/library/view/programming-computer-vision/9781449341916/ch06.html
                 ### downsample image
+                tmp = skimage.transform.resize(144,256)
                 #tmp = skimage.transform.downscale_local_mean(tmp, (4,3))
                 frames.append(tmp)
                 count+=num_frames
@@ -46,6 +47,7 @@ def load_set(videofile):
 
         ### if the frames are the right shape , then save
         # print numpy.shape(frames), numpy.shape(all_frames)
+
         #if numpy.shape(frames )==(num_frames, 160, 120):
         all_frames.append(frames)
 
@@ -56,10 +58,10 @@ def load_set(videofile):
 def prepare_video(video_file):
 
     num_frames = frames_count(video_file)
-    sequence = numpy.zeros((1,num_frames,640,320))
+    sequence = numpy.zeros((1,num_frames,144,256))
     t,errors = load_set(video_file)
-    #if numpy.shape(t)==(num_frames,160,120):
-    sequence[0] = t
+    if numpy.shape(t)==(num_frames,144,256):
+        sequence[0] = t
 
     return sequence
 
