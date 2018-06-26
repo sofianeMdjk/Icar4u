@@ -1,6 +1,8 @@
 import cv2
 import numpy
 import skimage
+from skimage import transform, color
+
 
 
 def frames_count(videofile):
@@ -28,33 +30,39 @@ def load_set(videofile,i):
         #success, img = vidcap.read()  ### if success is still true, attempt to read in next frame from vidcap video import
         count += 1  ### increase count
         frames = []  ### frames will be the individual images and frames_resh will be the "processed" ones
-        print(str(img))
+
 
         for k in range(i):
             vidcap.read()
 
         for j in range(0,99):
-            try:
+            # try:
                 success, img = vidcap.read()
+
 
                 ### conversion from RGB to grayscale image to reduce data
                 tmp = skimage.color.rgb2gray(numpy.array(img))
                 ### ref for above: https://www.safaribooksonline.com/library/view/programming-computer-vision/9781449341916/ch06.html
                 ### downsample image
-                tmp = skimage.transform.resize(144,256)
+                tmp = skimage.transform.resize(tmp,(144,256))
                 #tmp = skimage.transform.downscale_local_mean(tmp, (4,3))
                 frames.append(tmp)
+                # print("shape22 : " + str(numpy.shape(frames)))
                 count+=num_frames
-            except:
+            # except:
                 count+=1
-                pass
+                # print("nani")
+                # pass
+        # print(str(img))
+
 
         all_frames.append(frames)
+        break
 
     vidcap.release()
-    del frames; del image
+    # del frames; del image
     print("shape : " + str(numpy.shape(all_frames)))
-    return all_frames, error
+    return frames, error
 
 def prepare_video(video_file,rand):
 
@@ -65,6 +73,9 @@ def prepare_video(video_file,rand):
         t, errors = load_set(video_file, i)
         if numpy.shape(t) == (99, 144, 256):
             sequence[i] = t
+            print("kheubz")
+        else:
+            print("kheubzish")
 
     return sequence
 

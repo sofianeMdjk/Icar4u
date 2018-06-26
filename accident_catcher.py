@@ -12,5 +12,6 @@ rand = (int) (frames_count(video_path) - 99)
 
 data = prepare_video(video_path,min(rand,5))
 print(str(numpy.shape(data)))
+# print(str(data))
 prediction = model.predict(data)
 print(prediction)
