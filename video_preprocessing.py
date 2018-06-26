@@ -8,7 +8,7 @@ def frames_count(videofile):
     length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     return length
 
-def load_set(videofile):
+def load_set(videofile,i):
     '''The input is the path to the video file - the training videos are 99 frames long and have resolution of 720x1248
        This will be used for each video, individially, to turn the video into a sequence/stack of frames as arrays
        The shape returned (img) will be 99 (frames per video), 144 (pixels per column), 256 (pixels per row))
@@ -28,7 +28,54 @@ def load_set(videofile):
         success, img = vidcap.read()  ### if success is still true, attempt to read in next frame from vidcap video import
         count += 1  ### increase count
         frames = []  ### frames will be the individual images and frames_resh will be the "processed" ones
-        for j in range(0 ,num_frames):
+        print(str(img))
+
+        for k in range(i):
+            vidcap.read()
+
+        # [[56  40  32]
+        #  [70  54  46]
+        # [75
+        # 59
+        # 51]
+        # ...
+        # [92
+        # 75
+        # 62]
+        # [84  67  54]
+        # [66
+        # 49
+        # 36]]
+        #
+        # [[57  41  33]
+        #  [71  55  47]
+        # [76
+        # 60
+        # 52]
+        # ...
+        # [86
+        # 69
+        # 56]
+        # [78  61  48]
+        # [61
+        # 44
+        # 31]]
+        #
+        # [[47  31  23]
+        #  [61  45  37]
+        # [66
+        # 50
+        # 42]
+        # ...
+        # [80
+        # 63
+        # 50]
+        # [72  55  42]
+        # [55
+        # 38
+        # 25]]]
+
+        for j in range(i ,99+i):
             try:
                 success, img = vidcap.read()
 
@@ -40,7 +87,6 @@ def load_set(videofile):
                 #tmp = skimage.transform.downscale_local_mean(tmp, (4,3))
                 frames.append(tmp)
                 count+=num_frames
-
             except:
                 count+=1
                 pass  # print 'There are ', count, ' frame; delete last'        read_frames(videofile, name)
@@ -53,15 +99,18 @@ def load_set(videofile):
 
     vidcap.release()
     del frames; del image
+    print("shape : " + str(numpy.shape(all_frames)))
     return all_frames, error
 
-def prepare_video(video_file):
+def prepare_video(video_file,rand):
 
     num_frames = frames_count(video_file)
-    sequence = numpy.zeros((1,num_frames,144,256))
-    t,errors = load_set(video_file)
-    if numpy.shape(t)==(num_frames,144,256):
-        sequence[0] = t
+    sequence = numpy.zeros((rand,99,144,256))
+
+    for i in range(rand):
+        t, errors = load_set(video_file, i)
+        if numpy.shape(t) == (99, 144, 256):
+            sequence[i] = t
 
     return sequence
 
